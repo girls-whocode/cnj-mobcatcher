@@ -1,0 +1,202 @@
+item:
+  # Base item material used for the catcher.
+  material: AMETHYST_SHARD
+
+  # Display name shown on the item.
+  name: "&aMob Catcher"
+
+  # Lore templates. Placeholders:
+  # %uses% = remaining uses.
+  # %mob% = captured mob name.
+  lore:
+    empty:
+      - "&7Use this to capture a mob."
+      - ""
+      - "&7Uses Remaining: &e%uses%"
+    filled:
+      - "&7Captured: &f%mob%"
+      - "&7Uses Remaining: &e%uses%"
+      - ""
+      - "&eRight-click a block to release."
+
+crafting:
+  # Enable/disable crafting recipe registration.
+  enabled: true
+
+  # true = shaped recipe using 'shape' rows below.
+  # false = implementation may use fallback recipe behavior.
+  shaped: true
+
+  # 3-row recipe shape. Characters map to ingredients section.
+  shape:
+    - "EEE"
+    - "EGE"
+    - "L L"
+
+  # Recipe key map for the shape above.
+  ingredients:
+    E: EMERALD
+    G: EGG
+    L: LEAD
+
+uses:
+  # Global use system toggle.
+  # true = catchers consume uses.
+  # false = use handling may be bypassed by command/logic paths.
+  enabled: true
+
+  # Uses applied to newly crafted catchers.
+  default-crafted-uses: 1
+
+  # Allowed values for admin give command amounts.
+  # -1 means unlimited uses.
+  allowed-give-amounts:
+    - 1
+    - 3
+    - 5
+    - 10
+    - 25
+    - 50
+    - 75
+    - 100
+    - -1
+
+  # true = consume use only after successful capture.
+  # false = consume on attempt (if that behavior is implemented).
+  consume-on-success-only: true
+
+limits:
+  # Hard cap of stored mobs in one catcher item.
+  max-stored-per-catcher: 100
+
+  # Delay between release actions (milliseconds).
+  release-cooldown-ms: 500
+
+  # Safety limit for nearby same-type mobs when releasing.
+  max-nearby-same-type: 50
+
+capture:
+  # Capture output mode:
+  # STORAGE = existing shard storage mode
+  # EGG     = convert captured mob into a custom egg item
+  # HYBRID  = resolve mode per-player using permissions/sneak behavior below
+  mode: STORAGE
+
+  hybrid:
+    # Fallback mode for players without mode permissions.
+    default: STORAGE
+
+    # If a player has both mode permissions, sneaking captures into egg.
+    # Not sneaking captures into storage.
+    admin-sneak-for-egg: true
+
+  blacklist:
+    # Entity types that cannot be captured (unless bypass permission).
+    entity-types:
+      - WITHER
+      - ENDER_DRAGON
+      - WARDEN
+
+    # true = prevent capturing named mobs.
+    # false = allow capturing mobs with custom names.
+    named-mobs: true
+
+  # true = prevent capturing baby variants.
+  deny-babies: false
+
+  # true = catcher must be empty before capture.
+  # false = allow stacking same type/variant based on item logic.
+  require-empty-catcher: true
+
+release:
+  # true = clear mob AI on release (if release logic supports it).
+  # false = release with normal AI behavior.
+  clear-ai-on-release: false
+
+worlds:
+  # World filtering mode:
+  # - ALLOWLIST: only worlds in 'list' are allowed.
+  # - DENYLIST: worlds in 'list' are blocked; all others are allowed.
+  mode: ALLOWLIST
+
+  # Worlds used by the selected mode above.
+  # Names are case-insensitive (world, WORLD, World all match).
+  list:
+    - world
+    - world_nether
+    - world_the_end
+
+  # DENYLIST example:
+  # mode: DENYLIST
+  # list:
+  #   - world_nether
+  #   - world_the_end
+  # Result: capture/release blocked in nether + end, allowed everywhere else.
+
+  # Apply world filtering per action.
+  # capture: block/allow capturing based on world rules.
+  # release: block/allow releasing based on world rules.
+  apply:
+    capture: true
+    release: true
+
+claims:
+  # If true, claim ownership checks run when releasing mobs.
+  # If false, claim ownership is ignored completely.
+  enforce-on-release: false
+
+  # Only used when enforce-on-release is true.
+  # true  = allow releasing on someone else's claim.
+  # false = block releasing on someone else's claim.
+  allow-on-other-claims: false
+
+messages:
+  # Prefix used by command/feature messages where applied.
+  prefix: "&8[&aMobCatcher&8] "
+
+  # Placeholders: %mob%, %variant%, %stored%
+  # %variant% is optional and may be empty.
+  captured: "&aCaptured &f%mob%%variant% &a(&f%stored%&a stored)"
+
+  # Placeholders: %mob%, %variant%
+  captured-egg: "&aCaptured &f%mob%%variant% &ainto an egg."
+
+  # Placeholders: %mob%, %variant%
+  released: "&aReleased &f%mob%%variant%&a."
+
+  # Generic feedback strings.
+  no-uses: "&cThis catcher has no uses left."
+  blocked-mob: "&cYou cannot capture that mob."
+  already-filled: "&cThis catcher already contains a mob."
+  invalid-data: "&cThis catcher contains invalid mob data."
+  invalid-egg-data: "&cThis egg contains invalid mob data."
+  failed-release: "&cFailed to release mob."
+  same-stack-only: "&cThis shard can only stack the same mob type and variant."
+
+  # Placeholders: %catcher-uses%, %max-stored%
+  catcher-full: "&cThis catcher has &e%catcher-uses% &cuses, but can only hold &e%max-stored%&c mobs.&7 Release some before capturing more."
+
+  # World and claim protection messages.
+  world-blocked-capture: "&cYou cannot capture mobs in this world."
+  world-blocked-release: "&cYou cannot release mobs in this world."
+  claim-blocked-release: "&cYou cannot release mobs on someone else's claim."
+
+  commands:
+    no-permission: "&cNo permission."
+    usage-header: "&eUsage:"
+    usage-lines:
+      - "&7/mobcatcher give <player> <uses>"
+      - "&7/mobcatcher reload"
+    reload-success: "&aCNJMobCatcher config reloaded."
+    reload-failed: "&cFailed to reload crafting recipe: %error%"
+    give-usage: "&eUsage: /mobcatcher give <player> <uses>"
+    player-not-found: "&cPlayer not found."
+    invalid-uses-number: "&cUses must be a number."
+    invalid-uses-value: "&cAllowed uses: %allowed% or -1 for unlimited."
+    give-success: "&aGave &f%player% &aa Mob Catcher with &e%uses% &auses."
+    unknown-subcommand: "&cUnknown subcommand."
+
+sounds:
+  # Bukkit sound keys played on successful actions.
+  capture-success: ENTITY_EXPERIENCE_ORB_PICKUP
+  release-success: ENTITY_ENDER_EYE_DEATH

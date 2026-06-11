@@ -1,0 +1,34 @@
+name: CNJMobCatcher
+version: 2.0.0
+main: net.cnjgaming.mobcatcher.CNJMobCatcherPlugin
+api-version: '1.21'
+author: CNJ Gaming
+description: Custom mob catcher plugin for CNJ servers.
+softdepend:
+  - GriefPrevention
+
+commands:
+  mobcatcher:
+    description: Admin commands for CNJ Mob Catcher
+    usage: /mobcatcher give <player> <uses>
+    permission: cnj.mobcatcher.admin
+
+permissions:
+  cnj.mobcatcher.use:
+    default: true
+  cnj.mobcatcher.capture:
+    default: true
+  cnj.mobcatcher.release:
+    default: true
+  cnj.mobcatcher.admin:
+    default: op
+  cnj.mobcatcher.bypass.blacklist:
+    default: op
+  cnj.mobcatcher.bypass.worlds:
+    default: op
+  cnj.mobcatcher.bypass.claims:
+    default: op
+  cnj.mobcatcher.mode.storage:
+    default: op
+  cnj.mobcatcher.mode.egg:
+    default: op
