@@ -9,7 +9,7 @@ It is designed for survival-friendly gameplay, staff control, and easy configura
 CNJMobCatcher is intended to work from older supported setups through the latest 26.1 series.
 
 Current project details:
-- Plugin version: 2.0.0
+- Plugin version: 2.0.1
 - API version: 1.21
 - Java: 21 (Will work with Java 25)
 
